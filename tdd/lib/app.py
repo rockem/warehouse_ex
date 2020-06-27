@@ -13,10 +13,14 @@ def health():
 
 @post('/orders')
 def create_order():
-    order_items = json.loads(request.body.read())
+    order_items = _request_body()
     _allocate_stock_for(order_items)
     orders.add_order(order_items)
     response.status = 201
+
+
+def _request_body():
+    return json.loads(request.body.read())
 
 
 def _allocate_stock_for(order_items):
@@ -28,7 +32,7 @@ def _allocate_stock_for(order_items):
 
 @post('/supply')
 def create_supply():
-    order_items = json.loads(request.body.read())
+    order_items = _request_body()
     orders.add_supply(order_items)
     response.status = 201
 
@@ -51,6 +55,7 @@ def complete_task(id):
 
 @get('/stock')
 def get_stock():
+    response.content_type = 'application/json'
     return json.dumps(stock.all())
 
 
