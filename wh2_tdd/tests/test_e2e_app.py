@@ -41,3 +41,9 @@ def test_retrieve_supply_tasks(app):
         {'action': 'move', 'destination': [9, 2]},
         {'action': 'drop', 'product': 'Pasta'},
         {'action': 'move', 'destination': [0, 0]})
+
+
+def test_should_not_retrieve_already_retrieved_tasks(app):
+    app.create_order_for(['Salt'])
+    app.fetch_next_tasks()
+    app.has_no_next_tasks()

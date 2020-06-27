@@ -35,9 +35,5 @@ _tasks_steps = {
 }
 
 
-def create_tasks_for(orders):
-    tasks = []
-    for o in orders:
-        f = _tasks_steps[o.type]
-        tasks.extend(f(o.items))
-    return tasks
+def create_tasks_for(order):
+    return _tasks_steps[order.type](order.items)

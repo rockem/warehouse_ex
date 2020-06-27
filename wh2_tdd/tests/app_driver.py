@@ -60,5 +60,11 @@ class AppDriver:
         resp = requests.post(f'{self._domain}/supply', json=items)
         self._assert_response_status(resp, 201)
 
+    def fetch_next_tasks(self):
+        self._get_next_tasks()
+
+    def has_no_next_tasks(self):
+        assert len(self._get_next_tasks()) == 0
+
     def stop(self):
         self._app_p.kill()

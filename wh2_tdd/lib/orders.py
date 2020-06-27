@@ -1,4 +1,7 @@
-_orders = []
+import queue
+from queue import Empty
+
+_orders = queue.Queue(maxsize=20)
 
 
 class Order:
@@ -11,12 +14,15 @@ class Order:
 
 
 def add_order(order_items):
-    _orders.append(Order(Order.ORDER, order_items))
+    _orders.put(Order(Order.ORDER, order_items))
 
 
-def get_orders():
-    return _orders
+def get_next_order():
+    try:
+        return _orders.get(block=False)
+    except Empty:
+        return None
 
 
 def add_supply(order_items):
-    _orders.append(Order(Order.SUPPLY, order_items))
+    _orders.put(Order(Order.SUPPLY, order_items))
