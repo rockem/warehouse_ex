@@ -39,13 +39,17 @@ def create_supply():
 
 @get('/next-tasks')
 def get_next_tasks():
+    _create_all_orders_tasks()
+    response.content_type = 'application/json'
+    return json.dumps([t.__dict__ for t in tasks.next_tasks()])
+
+
+def _create_all_orders_tasks():
     while True:
         order = orders.get_next_order()
         if not order:
             break
         tasks.add_all(task_factory.create_tasks_for(order))
-    response.content_type = 'application/json'
-    return json.dumps([t.__dict__ for t in tasks.next_tasks()])
 
 
 @put('/tasks/<id>/complete')
