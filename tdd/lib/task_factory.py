@@ -22,10 +22,11 @@ def _create_order_tasks(items):
 
 def _create_supply_order_tasks(items):
     tasks = []
-    for i in items:
-        tasks.append(Task(action=Task.MOVE, destination=_stock_layout[i]))
-        tasks.append(Task(action=Task.DROP, product=i))
-    tasks.append(Task(action=Task.MOVE, destination=(0, 0)))
+    for item in items:
+        tasks.append(Task(action=Task.MOVE, destination=(0, 0)))
+        tasks.append(Task(action=Task.PICK, product=item))
+        tasks.append(Task(action=Task.MOVE, destination=_stock_layout[item]))
+        tasks.append(Task(action=Task.DROP, product=item))
     return tasks
 
 

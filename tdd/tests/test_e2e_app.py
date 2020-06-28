@@ -36,11 +36,22 @@ def test_stock_changes_on_dispatched_order(app):
 def test_retrieve_supply_tasks(app):
     app.create_supply_order_for(['Milk', 'Pasta'])
     app.next_tasks_contains(
+        {'action': 'move', 'destination': [0, 0]},
+        {'action': 'pick', 'product': 'Milk'},
         {'action': 'move', 'destination': [1, 5]},
         {'action': 'drop', 'product': 'Milk'},
+        {'action': 'move', 'destination': [0, 0]},
+        {'action': 'pick', 'product': 'Pasta'},
         {'action': 'move', 'destination': [9, 2]},
-        {'action': 'drop', 'product': 'Pasta'},
-        {'action': 'move', 'destination': [0, 0]})
+        {'action': 'drop', 'product': 'Pasta'})
+
+
+def test_stock_changes_on_supply_order_inserts(app):
+    app.create_supply_order_for(['Salt', 'Milk', 'Milk', 'Pasta'])
+    app.complete_all_tasks()
+    assert app.quantity_of('Salt') == 11
+    assert app.quantity_of('Milk') == 12
+    assert app.quantity_of('Pasta') == 11
 
 
 def test_should_not_retrieve_already_retrieved_tasks(app):
