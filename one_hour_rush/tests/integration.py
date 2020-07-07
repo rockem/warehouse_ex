@@ -2,21 +2,12 @@ import subprocess
 import sys
 from time import sleep
 
-import pytest
 import requests
 
 DOMAIN = 'http://localhost:8080'
 
 
-@pytest.fixture
-def app():
-    p = subprocess.Popen([sys.executable, 'warehouse/app.py'])
-    sleep(1)
-    yield
-    p.kill()
-
-
-def test_integration(app):
+def test_integration():
     _add_order(['Milk', 'Bread'])
     _get_tasks()
     _show_stock()
@@ -54,3 +45,14 @@ def _show_stock():
 
 def _supply(items):
     r = requests.post(f"{DOMAIN}/supply", json=items)
+
+
+if __name__ == '__main__':
+    p = None
+    try:
+        p = subprocess.Popen([sys.executable, 'warehouse/app.py'])
+        sleep(1)
+        test_integration()
+    finally:
+        if p:
+            p.kill()
