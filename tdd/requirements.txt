@@ -1,5 +1,5 @@
 pytest==5.4.3
-bottle==0.12.18
+bottle==0.12.19
 busypie==0.4.0
 requests==2.24.0
 invoke==1.4.1
